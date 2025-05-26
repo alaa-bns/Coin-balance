@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coin Balance</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 0; background: #121212; color: #eee;
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+    header {
+      background: #1f1f1f; padding: 1rem; text-align: center;
+      font-size: 1.8rem; font-weight: bold; letter-spacing: 2px;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .balance-box {
+      background: #242424;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 15px #444;
+    }
+    .balance-box h2 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+    }
+    .balance {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #4caf50;
+    }
+    .ads {
+      background: #333;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #bbb;
+    }
+    .affiliate-links {
+      background: #242424;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+    .affiliate-links h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #4caf50;
+    }
+    .affiliate-links a {
+      display: block;
+      color: #90caf9;
+      margin-bottom: 0.6rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .affiliate-links a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #1f1f1f;
+      font-size: 0.8rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>Coin Balance</header>
+
+  <main>
+    <div class="balance-box">
+      <h2>Your Coin Portfolio Balance</h2>
+      <div class="balance" id="balance">$0.00</div>
+    </div>
+
+    <div class="ads">
+      <!-- Google AdSense placeholder -->
+      Advertisement Space - Your Ads Here
+    </div>
+
+    <div class="affiliate-links">
+      <h3>Recommended Crypto Exchanges</h3>
+      <a href="https://www.binance.com/?ref=12345" target="_blank" rel="noopener">Binance - Trade Cryptos</a>
+      <a href="https://www.coinbase.com/join/yourreferral" target="_blank" rel="noopener">Coinbase - Easy Buying</a>
+      <a href="https://www.kraken.com/prices?ref=yourref" target="_blank" rel="noopener">Kraken - Secure Trading</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Coin Balance. Affiliate links may earn us a commission.
+  </footer>
+
+  <script>
+    // Example portfolio: you own 0.5 BTC and 2 ETH (Ethereum)
+    const portfolio = {
+      BTC: 0.5,
+      ETH: 2
+    };
+
+    // Fetch live prices from CoinGecko API
+    async function fetchPrices() {
+      try {
+        const response = await fetch(
+          'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd'
+        );
+        const prices = await response.json();
+
+        // Calculate total value in USD
+        const btcPrice = prices.bitcoin.usd;
+        const ethPrice = prices.ethereum.usd;
+        const total = (portfolio.BTC * btcPrice) + (portfolio.ETH * ethPrice);
+
+        // Update the balance display
+        document.getElementById('balance').textContent = `$${total.toFixed(2)}`;
+      } catch (error) {
+        console.error('Error fetching prices:', error);
+        document.getElementById('balance').textContent = 'Error loading data';
+      }
+    }
+
+    fetchPrices();
+    // Update every 5 minutes
+    setInterval(fetchPrices, 300000);
+  </script>
+</body>
+</html>
